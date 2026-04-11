@@ -3,10 +3,10 @@
 :root {
   --bg: #000000;
   --bg-widget: #0a0a0a;
-  --cyan: #00ffff;
-  --cyan-dim: #008888;
-  --magenta: #ff00ff;
-  --magenta-dim: #880088;
+  --orange: #ff6600;
+  --orange-dim: #883300;
+  --magenta: #aa8844;
+  --magenta-dim: #554422;
   --yellow: #ffff00;
   --yellow-dim: #888800;
   --red: #ff0000;
@@ -24,7 +24,7 @@
 body {
   font-family: 'JetBrains Mono', monospace;
   background: var(--bg);
-  color: var(--cyan);
+  color: var(--orange);
   font-size: 14px;
   line-height: 1.3;
   padding: 20px;
@@ -40,7 +40,7 @@ body {
 }
 
 .title-bar {
-  background: var(--cyan);
+  background: var(--orange);
   color: var(--bg);
   padding: 4px 8px;
   font-weight: bold;
@@ -51,12 +51,25 @@ body {
   letter-spacing: 1px;
 }
 
+.sunrise-art {
+  font-size: 10px;
+  color: var(--orange);
+  white-space: pre;
+  line-height: 1.1;
+  padding: 8px;
+  text-align: center;
+  opacity: 0.8;
+  overflow-x: auto;
+  display: block;
+  margin: 0 auto;
+}
+
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
   background: var(--grey-dim);
-  border: 1px solid var(--cyan-dim);
+  border: 1px solid var(--orange-dim);
   margin-top: 1px;
 }
 
@@ -83,8 +96,8 @@ body {
 .widget-value {
   font-size: 24px;
   font-weight: bold;
-  color: var(--cyan);
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  color: var(--orange);
+  text-shadow: 0 0 10px rgba(255, 102, 0, 0.5);
 }
 
 .widget-value.accent {
@@ -102,7 +115,7 @@ body {
 
 .progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--cyan), var(--magenta));
+  background: linear-gradient(90deg, var(--orange), var(--yellow));
   transition: width 0.3s ease;
 }
 
@@ -160,7 +173,7 @@ body {
 }
 
 .log-time {
-  color: var(--cyan);
+  color: var(--orange);
   font-weight: bold;
 }
 
@@ -170,7 +183,7 @@ body {
 }
 
 .log-status.success {
-  color: var(--cyan);
+  color: var(--orange);
 }
 
 .log-status.fail {
@@ -209,7 +222,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--cyan-dim);
+  background: var(--orange-dim);
 }
 
 @media (max-width: 600px) {
