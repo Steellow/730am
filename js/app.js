@@ -206,7 +206,16 @@
         },
         plugins: {
           legend: {
-            display: false,
+            display: true,
+            position: 'top',
+            align: 'end',
+            labels: {
+              color: '#888888',
+              font: { family: 'JetBrains Mono', size: 10 },
+              boxWidth: 12,
+              boxHeight: 8,
+              padding: 10,
+            }
           },
           tooltip: {
             backgroundColor: '#0a0a0a',
