@@ -136,6 +136,9 @@
     const labels = data.map(d => d.date.slice(5));
     const times = data.map(d => timeToMinutes(d.time));
     const goalMinutes = timeToMinutes(goalTime);
+    
+    const last30 = times.slice(-30);
+    const avgLast30 = last30.length > 0 ? Math.round(last30.reduce((a, b) => a + b, 0) / last30.length) : null;
 
     new Chart(ctx, {
       type: 'line',
@@ -156,6 +159,14 @@
           label: 'GOAL',
           data: Array(data.length).fill(goalMinutes),
           borderColor: '#aa8844',
+          borderWidth: 1,
+          borderDash: [4, 2],
+          pointRadius: 0,
+          fill: false,
+        }, {
+          label: 'AVG30',
+          data: Array(data.length).fill(avgLast30),
+          borderColor: '#ffff00',
           borderWidth: 1,
           borderDash: [4, 2],
           pointRadius: 0,
@@ -206,8 +217,12 @@
             titleFont: { family: 'JetBrains Mono', size: 12 },
             bodyFont: { family: 'JetBrains Mono', size: 11 },
             callbacks: {
+              title: function(context) {
+                return context[0].label;
+              },
               label: function(context) {
                 if (context.dataset.label === 'GOAL') return null;
+                if (context.dataset.label === 'AVG30') return 'AVG30: ' + minutesToTime(context.raw);
                 return 'WAKE: ' + minutesToTime(context.raw);
               }
             }
