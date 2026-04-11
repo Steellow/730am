@@ -88,13 +88,6 @@ body {
   grid-column: span 1;
 }
 
-.widget.wide {
-  grid-column: span 3;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
 .widget-title {
   font-size: 10px;
   color: var(--magenta);
@@ -112,11 +105,6 @@ body {
 .widget-value.accent {
   color: var(--yellow);
   text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
-}
-
-.widget-value.small {
-  font-size: 18px;
-  margin-bottom: 4px;
 }
 
 .progress-bar {
@@ -155,10 +143,6 @@ body {
 
 .section {
   margin-top: 1px;
-}
-
-.section.wide {
-  padding: 12px;
 }
 
 .wide-bar {
