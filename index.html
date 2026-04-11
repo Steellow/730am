@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wake Up Tracker</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🌅 WAKE UP TRACKER</h1>
+      <p class="subtitle">Track your morning routine</p>
+    </header>
+
+    <div class="goal-banner">
+      Goal: Wake up by <span>07:30</span> every morning
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Entries</div>
+        <div class="stat-value" id="stat-count">-</div>
+      </div>
+      <div class="stat-card streak">
+        <div class="stat-label">Current Streak</div>
+        <div class="stat-value" id="stat-streak">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Average</div>
+        <div class="stat-value" id="stat-average">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Median</div>
+        <div class="stat-value" id="stat-median">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Earliest</div>
+        <div class="stat-value" id="stat-min">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Latest</div>
+        <div class="stat-value" id="stat-max">-</div>
+      </div>
+    </div>
+
+    <div class="chart-section">
+      <h2>Last 30 Days</h2>
+      <canvas id="chart"></canvas>
+    </div>
+
+    <div class="recent-section">
+      <h2>Recent Entries</h2>
+      <div class="entries-list" id="recent-entries">
+        <div class="entry">
+          <span class="entry-date">Loading...</span>
+          <span class="entry-time">--:--</span>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>Data stored in js/data.js</p>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
