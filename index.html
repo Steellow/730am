@@ -28,13 +28,8 @@
       
       <div class="bento-grid">
         <div class="widget">
-          <div class="widget-title">── ENTRIES ──</div>
-          <div class="widget-value" id="stat-count">--</div>
-        </div>
-        
-        <div class="widget">
-          <div class="widget-title">── STREAK ──</div>
-          <div class="widget-value accent" id="stat-streak">--</div>
+          <div class="widget-title">── ENTRIES + STREAK ──</div>
+          <div class="widget-value accent" id="stat-entries-streak">--</div>
         </div>
         
         <div class="widget">
@@ -48,19 +43,26 @@
         </div>
         
         <div class="widget">
-          <div class="widget-title">── EARLY ──</div>
+          <div class="widget-title">── EARLIEST ──</div>
           <div class="widget-value" id="stat-min">--</div>
         </div>
         
         <div class="widget">
-          <div class="widget-title">── LATE ──</div>
+          <div class="widget-title">── LATEST ──</div>
           <div class="widget-value" id="stat-max">--</div>
         </div>
         
-        <div class="widget wide">
-          <div class="widget-title">── SUCCESS (last 30 days) ──</div>
-          <div class="widget-value" id="stat-success-rate">--</div>
-          <div class="progress-bar" id="progress-success"></div>
+        <div class="widget">
+          <div class="widget-title">── MOST ──</div>
+          <div class="widget-value" id="stat-most">--</div>
+        </div>
+      </div>
+
+      <div class="wide-bar">
+        <div class="wide-bar-header">── LAST 30 DAYS ──</div>
+        <div class="wide-bar-content">
+          <div class="thirty-bar" id="bar-success"></div>
+          <div class="wide-bar-value" id="stat-success-rate">--</div>
         </div>
       </div>
 

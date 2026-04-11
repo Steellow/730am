@@ -29,6 +29,15 @@
     return sorted[mid];
   }
 
+  function calculateMostCommon(times) {
+    if (times.length === 0) return null;
+    const counts = {};
+    times.forEach(t => counts[t] = (counts[t] || 0) + 1);
+    const maxCount = Math.max(...Object.values(counts));
+    const mostCommon = Object.keys(counts).find(t => counts[t] === maxCount);
+    return parseInt(mostCommon);
+  }
+
   function calculateStreak(data, goalMinutes) {
     let streak = 0;
     for (let i = data.length - 1; i >= 0; i--) {
@@ -48,6 +57,26 @@
     return Math.round((successCount / last30.length) * 100);
   }
 
+  function getLast30Days(data, goalMinutes) {
+    const today = new Date();
+    const days = [];
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(today.getDate() - i);
+      const dateStr = d.toISOString().split('T')[0];
+      const entry = data.find(x => x.date === dateStr);
+      if (entry) {
+        days.push({
+          date: dateStr,
+          success: timeToMinutes(entry.time) <= goalMinutes
+        });
+      } else {
+        days.push({ date: dateStr, success: null });
+      }
+    }
+    return days;
+  }
+
   function calculateStats(data, goalTime) {
     const times = data.map(d => timeToMinutes(d.time));
     const goalMinutes = timeToMinutes(goalTime);
@@ -56,33 +85,37 @@
     return {
       count: data.length,
       streak: calculateStreak(data, streakGoalMinutes),
-      successRate: calculateSuccessRateLast30(data, goalMinutes),
+      successRate: calculateSuccessRateLast30(data, streakGoalMinutes),
+      last30Days: getLast30Days(data, streakGoalMinutes),
       average: minutesToTime(calculateAverage(times)),
       median: minutesToTime(calculateMedian(times)),
       min: minutesToTime(Math.min(...times)),
       max: minutesToTime(Math.max(...times)),
+      most: minutesToTime(calculateMostCommon(times)),
     };
   }
 
   function renderStats(stats) {
-    document.getElementById('stat-count').textContent = stats.count;
-    document.getElementById('stat-streak').textContent = stats.streak;
-    document.getElementById('stat-success-rate').textContent = stats.successRate !== null ? stats.successRate + '%' : '--';
+    document.getElementById('stat-entries-streak').textContent = `${stats.count} / ${stats.streak}`;
     document.getElementById('stat-average').textContent = stats.average;
     document.getElementById('stat-median').textContent = stats.median;
     document.getElementById('stat-min').textContent = stats.min;
     document.getElementById('stat-max').textContent = stats.max;
+    document.getElementById('stat-most').textContent = stats.most;
+    document.getElementById('stat-success-rate').textContent = stats.successRate !== null ? stats.successRate + '%' : '--';
     
-    if (stats.successRate !== null) {
-      const progressBar = document.getElementById('progress-success');
-      progressBar.innerHTML = `<div class="progress-bar-fill" style="width: ${stats.successRate}%"></div>`;
-    }
+    const successBar = document.getElementById('bar-success');
+    successBar.innerHTML = stats.last30Days.map(d => {
+      if (d.success === true) return '<div class="thirty-bar-cell success"></div>';
+      if (d.success === false) return '<div class="thirty-bar-cell fail"></div>';
+      return '<div class="thirty-bar-cell empty"></div>';
+    }).join('');
   }
 
-  function renderRecentEntries(data, goalTime, limit = 12) {
+  function renderRecentEntries(data, limit = 12) {
     const container = document.getElementById('recent-entries');
     const recent = data.slice(-limit).reverse();
-    const goalMinutes = timeToMinutes(goalTime);
+    const goalMinutes = timeToMinutes(STREAK_GOAL);
     
     container.innerHTML = recent.map(entry => {
       const mins = timeToMinutes(entry.time);
@@ -137,7 +170,6 @@
         },
         scales: {
           y: {
-            reverse: true,
             ticks: {
               callback: function(value) {
                 return minutesToTime(value);
@@ -187,7 +219,7 @@
   document.addEventListener('DOMContentLoaded', function() {
     const stats = calculateStats(wakeUpData, GOAL_DISPLAY);
     renderStats(stats);
-    renderRecentEntries(wakeUpData, GOAL_DISPLAY);
+    renderRecentEntries(wakeUpData);
     renderChart(wakeUpData, GOAL_DISPLAY);
   });
 })();
