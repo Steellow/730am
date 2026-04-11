@@ -29,12 +29,16 @@ const wakeUpData = [
 - `date`: YYYY-MM-DD
 - `time`: HH:MM (24-hour)
 
-## Deploy
+## Self-Host
 
-### GitHub Pages
-Push to repo → Settings → Pages → Deploy from main
+### Option 1: GitHub Pages
+1. Fork this repo
+2. Edit `js/data.js` with your wake-up times
+3. Push to master
+4. Enable GitHub Pages: Settings → Pages → Deploy from master
 
-### Raspberry Pi
+### Option 2: Local
+Open `index.html` in your browser, or serve locally:
 ```bash
 python3 -m http.server 8000
 ```
