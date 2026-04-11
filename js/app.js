@@ -96,7 +96,8 @@
   }
 
   function renderStats(stats) {
-    document.getElementById('stat-entries-streak').textContent = `${stats.count} / ${stats.streak}`;
+    document.getElementById('stat-count').textContent = stats.count;
+    document.getElementById('stat-streak').textContent = stats.streak;
     document.getElementById('stat-average').textContent = stats.average;
     document.getElementById('stat-median').textContent = stats.median;
     document.getElementById('stat-min').textContent = stats.min;
