@@ -51,6 +51,10 @@ body {
   letter-spacing: 1px;
 }
 
+.title-bar .title-text.mobile {
+  display: none;
+}
+
 .sunrise-art {
   font-size: 10px;
   color: var(--orange);
@@ -229,6 +233,14 @@ body {
   border-bottom: none;
 }
 
+.section-title.mobile {
+  display: none;
+}
+
+.section-title.desktop {
+  display: block;
+}
+
 .chart-wrapper {
   background: var(--bg-widget);
   border: 1px solid var(--grey-dim);
@@ -368,8 +380,25 @@ body {
   
   .sunrise-art {
     display: block;
-    font-size: 6px;
+    font-size: 8px;
     padding: 4px;
+    width: 100%;
+  }
+  
+  .title-bar .title-text.desktop {
+    display: none;
+  }
+  
+  .title-bar .title-text.mobile {
+    display: inline;
+  }
+  
+  .section-title.mobile {
+    display: block;
+  }
+  
+  .section-title.desktop {
+    display: none;
   }
   
   .chart-wrapper {
