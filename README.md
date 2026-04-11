@@ -1,10 +1,11 @@
-# Wake Up Tracker
+# APOLLO WAKE - Mission Control
 
-A simple dashboard for tracking and visualizing your wake-up times. Built with plain HTML/CSS/JS.
+A retro terminal-style dashboard for tracking your wake-up times. 
+CGA/EGA era aesthetics with scanlines and CRT phosphor green feel.
 
-## Goal
+## Mission
 
-Wake up at **07:30** every morning. Track progress and maintain motivation through stats and visualizations.
+**Wake up at 07:30 LCT** every morning. Track your progress through mission stats.
 
 ## Quick Start
 
@@ -13,7 +14,7 @@ Wake up at **07:30** every morning. Track progress and maintain motivation throu
 
 ## Data Format
 
-Edit `js/data.js` to add new entries:
+Edit `js/data.js`:
 
 ```js
 const GOAL_TIME = "07:30";
@@ -21,87 +22,62 @@ const GOAL_TIME = "07:30";
 const wakeUpData = [
   { date: "2026-04-07", time: "07:25" },
   { date: "2026-04-08", time: "07:32" },
-  // Add new entries here (newest last)
+  // Add new entries (newest last)
 ];
 ```
 
-**Format:**
 - `date`: YYYY-MM-DD
 - `time`: HH:MM (24-hour)
 
-## Features
+## Modules
 
-- **Streak**: Consecutive days meeting goal (≤ goal time)
-- **Average**: Mean wake time
-- **Median**: Middle wake time
-- **Min/Max**: Earliest and latest wake times
-- **Chart**: Line graph of last 30 days
-- **Recent**: List of recent entries
+| ID | Function |
+|----|----------|
+| MOD-01 | Total entries |
+| MOD-02 | Streak sequence |
+| MOD-03 | Average time |
+| MOD-04 | Median time |
+| MOD-05 | Earliest (min) |
+| MOD-06 | Latest (max) |
+| MOD-07 | 30-day timeline |
+| LOG | Recent entries |
 
-## Deployment
+## Deploy
 
 ### GitHub Pages
-
-1. Push to a GitHub repository
-2. Go to Settings → Pages
-3. Source: Deploy from `main` branch
-4. Your dashboard will be at `https://username.github.io/repo-name/`
+Push to repo → Settings → Pages → Deploy from main
 
 ### Raspberry Pi
-
-Serve with any static file server:
-
 ```bash
-# Python
 python3 -m http.server 8000
-
-# Node (npx)
-npx serve .
 ```
 
-Then access at `http://<pi-ip>:8000`
-
-## File Structure
+## Files
 
 ```
-├── index.html        # Main dashboard
-├── css/style.css    # Terminal/space themed styles
-├── js/
-│   ├── data.js      # Your wake-up data (edit manually)
-│   └── app.js       # Stats & chart logic
-└── README.md        # This file
+index.html     - Dashboard
+css/style.css  - Terminal theme (VT323 font)
+js/data.js     - Your data (edit manually)
+js/app.js      - Stats & chart logic
+README.md
 ```
 
-## Tech Stack
-
-- Plain HTML/CSS/JS (no build step)
-- [Chart.js](https://www.chartjs.org/) via CDN for charts
-- [Fira Code](https://github.com/tonsky/FiraCode) font
-
-## Customization
-
-### Change Goal Time
-
-Edit `GOAL_TIME` in `js/data.js`:
+## Customize
 
 ```js
-const GOAL_TIME = "06:00";  // New goal
+// js/data.js - Change goal
+const GOAL_TIME = "06:00";
 ```
-
-### Change Styling
-
-Edit CSS variables in `css/style.css`:
 
 ```css
-:root {
-  --goal: #your-color;      /* Primary color */
-  --accent: #your-color;    /* Accent color */
-}
+/* css/style.css - Change colors */
+--primary: #ff6600;  /* Orange/sunrise */
+--accent: #ff9933;
+--text: #00ff00;     /* Phosphor green */
 ```
 
-## Future Enhancements
+## Tech
 
-- Auto-track via API or cron job
-- Add/edit entries via UI
-- Export data as CSV
-- Mobile-friendly improvements
+- Plain HTML/CSS/JS (no build)
+- [Chart.js](https://www.chartjs.org/) via CDN
+- [VT323](https://fonts.google.com/specimen/VT323) font

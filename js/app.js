@@ -61,13 +61,13 @@
     document.getElementById('stat-max').textContent = stats.max;
   }
 
-  function renderRecentEntries(data, limit = 10) {
+  function renderRecentEntries(data, limit = 15) {
     const container = document.getElementById('recent-entries');
     const recent = data.slice(-limit).reverse();
     container.innerHTML = recent.map(entry => `
-      <div class="entry">
-        <span class="entry-date">${entry.date}</span>
-        <span class="entry-time">${entry.time}</span>
+      <div class="log-entry">
+        <span class="timestamp">${entry.date}</span>
+        <span class="entry-data">WAKE: ${entry.time}</span>
       </div>
     `).join('');
   }
@@ -83,19 +83,20 @@
       data: {
         labels: labels,
         datasets: [{
-          label: 'Wake Time',
+          label: 'WAKE TIME',
           data: times,
-          borderColor: '#00ff41',
-          backgroundColor: 'rgba(0, 255, 65, 0.1)',
+          borderColor: '#ff6600',
+          backgroundColor: 'rgba(255, 102, 0, 0.1)',
           borderWidth: 2,
-          pointBackgroundColor: '#00d4ff',
-          pointBorderColor: '#00d4ff',
-          tension: 0.3,
-          fill: true,
+          pointBackgroundColor: '#ff9933',
+          pointBorderColor: '#ff6600',
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          tension: 0,
         }, {
-          label: 'Goal',
+          label: 'GOAL',
           data: Array(data.length).fill(goalMinutes),
-          borderColor: '#ff4141',
+          borderColor: '#333333',
           borderWidth: 1,
           borderDash: [5, 5],
           pointRadius: 0,
@@ -104,6 +105,11 @@
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          intersect: false,
+          mode: 'index',
+        },
         scales: {
           y: {
             reverse: true,
@@ -111,26 +117,44 @@
               callback: function(value) {
                 return minutesToTime(value);
               },
-              color: '#888',
+              color: '#666666',
+              font: { family: 'VT323', size: 14 },
             },
             grid: {
-              color: 'rgba(255, 255, 255, 0.1)',
+              color: '#222222',
             },
           },
           x: {
             ticks: {
-              color: '#888',
+              color: '#666666',
+              font: { family: 'VT323', size: 12 },
               maxRotation: 45,
             },
             grid: {
-              color: 'rgba(255, 255, 255, 0.1)',
+              color: '#222222',
             },
           }
         },
         plugins: {
           legend: {
             labels: {
-              color: '#00ff41',
+              color: '#ff6600',
+              font: { family: 'VT323', size: 14 },
+            }
+          },
+          tooltip: {
+            backgroundColor: '#0a0a0a',
+            titleColor: '#ff6600',
+            bodyColor: '#00ff00',
+            borderColor: '#333333',
+            borderWidth: 1,
+            titleFont: { family: 'VT323', size: 16 },
+            bodyFont: { family: 'VT323', size: 14 },
+            callbacks: {
+              label: function(context) {
+                if (context.dataset.label === 'GOAL') return null;
+                return 'WAKE: ' + minutesToTime(context.raw);
+              }
             }
           }
         }
@@ -138,7 +162,16 @@
     });
   }
 
+  function updateClock() {
+    const now = new Date();
+    const time = now.toISOString().split('T')[1].split('.')[0];
+    const date = now.toISOString().split('T')[0];
+    document.getElementById('current-time').textContent = `${date} ${time} UTC`;
+  }
+
   document.addEventListener('DOMContentLoaded', function() {
+    updateClock();
+    setInterval(updateClock, 1000);
     const stats = calculateStats(wakeUpData, GOAL_TIME);
     renderStats(stats);
     renderRecentEntries(wakeUpData);

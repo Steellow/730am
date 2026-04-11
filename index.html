@@ -3,64 +3,100 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wake Up Tracker</title>
+  <title>Apollo Wake - Mission Control</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>🌅 WAKE UP TRACKER</h1>
-      <p class="subtitle">Track your morning routine</p>
+      <pre class="ascii-header">
+  ___  __   __  _____  __    __   __  __
+ / _ \ \ \ / / |___ /  \ \  / /   \ \/ /
+| | | |\ V /    |_ \   \ \/ /     >  < 
+| |_| | | |    ___) |  / / \    /_/\_\
+ \___/  |_|   |____/  /_/   \ ,___/  
+       M I S S I O N   C O N T R O L
+      </pre>
+      <p class="subtitle">// MISSION CONTROL DASHBOARD //</p>
     </header>
 
-    <div class="goal-banner">
-      Goal: Wake up by <span>07:30</span> every morning
+    <div class="mission-status">
+      <div class="status-indicator online"></div>
+      <span class="status-text">MISSION ACTIVE</span>
+      <span class="goal-display">TARGET: <span class="highlight">07:30</span> LCT</span>
     </div>
 
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-label">Entries</div>
-        <div class="stat-value" id="stat-count">-</div>
+    <div class="modules-grid">
+      <div class="module">
+        <div class="module-header">
+          <span class="module-id">MOD-01</span>
+          <span class="module-name">DATA LOG</span>
+        </div>
+        <div class="module-value" id="stat-count">--</div>
       </div>
-      <div class="stat-card streak">
-        <div class="stat-label">Current Streak</div>
-        <div class="stat-value" id="stat-streak">-</div>
+      <div class="module">
+        <div class="module-header">
+          <span class="module-id">MOD-02</span>
+          <span class="module-name">STREAK SEQ</span>
+        </div>
+        <div class="module-value streak" id="stat-streak">--</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-label">Average</div>
-        <div class="stat-value" id="stat-average">-</div>
+      <div class="module">
+        <div class="module-header">
+          <span class="module-id">MOD-03</span>
+          <span class="module-name">AVG TIME</span>
+        </div>
+        <div class="module-value" id="stat-average">--</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-label">Median</div>
-        <div class="stat-value" id="stat-median">-</div>
+      <div class="module">
+        <div class="module-header">
+          <span class="module-id">MOD-04</span>
+          <span class="module-name">MEDIAN</span>
+        </div>
+        <div class="module-value" id="stat-median">--</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-label">Earliest</div>
-        <div class="stat-value" id="stat-min">-</div>
+      <div class="module">
+        <div class="module-header">
+          <span class="module-id">MOD-05</span>
+          <span class="module-name">EARLIEST</span>
+        </div>
+        <div class="module-value" id="stat-min">--</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-label">Latest</div>
-        <div class="stat-value" id="stat-max">-</div>
+      <div class="module">
+        <div class="module-header">
+          <span class="module-id">MOD-06</span>
+          <span class="module-name">LATEST</span>
+        </div>
+        <div class="module-value" id="stat-max">--</div>
       </div>
     </div>
 
-    <div class="chart-section">
-      <h2>Last 30 Days</h2>
-      <canvas id="chart"></canvas>
+    <div class="chart-container">
+      <div class="module-header">
+        <span class="module-id">MOD-07</span>
+        <span class="module-name">WAKE TIMELINE // LAST 30 DAYS</span>
+      </div>
+      <div class="chart-wrapper">
+        <canvas id="chart"></canvas>
+      </div>
     </div>
 
-    <div class="recent-section">
-      <h2>Recent Entries</h2>
-      <div class="entries-list" id="recent-entries">
-        <div class="entry">
-          <span class="entry-date">Loading...</span>
-          <span class="entry-time">--:--</span>
+    <div class="data-log">
+      <div class="module-header">
+        <span class="module-id">LOG</span>
+        <span class="module-name">RECENT ENTRIES</span>
+      </div>
+      <div class="log-entries" id="recent-entries">
+        <div class="log-entry">
+          <span class="timestamp">--</span>
+          <span class="entry-data">LOADING...</span>
         </div>
       </div>
     </div>
 
     <footer>
-      <p>Data stored in js/data.js</p>
+      <span>APOLLO WAKE v1.0 // DATA: js/data.js</span>
+      <span id="current-time">--</span>
     </footer>
   </div>
 
