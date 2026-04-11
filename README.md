@@ -1,11 +1,11 @@
-# APOLLO WAKE - Mission Control
+# 730am - Wake Up Tracker
 
-A retro terminal-style dashboard for tracking your wake-up times. 
-CGA/EGA era aesthetics with scanlines and CRT phosphor green feel.
+A terminal-style dashboard for tracking your wake-up times. 
+Retro hacker vibes with scanlines, ASCII art, and command-line aesthetics.
 
-## Mission
+## Goal
 
-**Wake up at 07:30 LCT** every morning. Track your progress through mission stats.
+Wake up at **07:30** every morning. Streak counts days ≤ 08:00.
 
 ## Quick Start
 
@@ -29,19 +29,6 @@ const wakeUpData = [
 - `date`: YYYY-MM-DD
 - `time`: HH:MM (24-hour)
 
-## Modules
-
-| ID | Function |
-|----|----------|
-| MOD-01 | Total entries |
-| MOD-02 | Streak sequence |
-| MOD-03 | Average time |
-| MOD-04 | Median time |
-| MOD-05 | Earliest (min) |
-| MOD-06 | Latest (max) |
-| MOD-07 | 30-day timeline |
-| LOG | Recent entries |
-
 ## Deploy
 
 ### GitHub Pages
@@ -62,7 +49,7 @@ js/app.js      - Stats & chart logic
 README.md
 ```
 
-## Customize
+## Customization
 
 ```js
 // js/data.js - Change goal
@@ -70,10 +57,9 @@ const GOAL_TIME = "06:00";
 ```
 
 ```css
-/* css/style.css - Change colors */
+/* css/style.css - Colors */
 --primary: #ff6600;  /* Orange/sunrise */
---accent: #ff9933;
---text: #00ff00;     /* Phosphor green */
+--text: #00ff00;     /* Terminal green */
 ```
 
 ## Tech

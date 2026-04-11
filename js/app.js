@@ -1,4 +1,7 @@
 (function() {
+  const GOAL_DISPLAY = GOAL_TIME;
+  const STREAK_GOAL = "08:00";
+
   function timeToMinutes(timeStr) {
     const [hours, minutes] = timeStr.split(':').map(Number);
     return hours * 60 + minutes;
@@ -38,13 +41,22 @@
     return streak;
   }
 
+  function calculateSuccessRateLast30(data, goalMinutes) {
+    const last30 = data.slice(-30);
+    if (last30.length === 0) return null;
+    const successCount = last30.filter(d => timeToMinutes(d.time) <= goalMinutes).length;
+    return Math.round((successCount / last30.length) * 100);
+  }
+
   function calculateStats(data, goalTime) {
     const times = data.map(d => timeToMinutes(d.time));
     const goalMinutes = timeToMinutes(goalTime);
+    const streakGoalMinutes = timeToMinutes(STREAK_GOAL);
 
     return {
       count: data.length,
-      streak: calculateStreak(data, goalMinutes),
+      streak: calculateStreak(data, streakGoalMinutes),
+      successRate: calculateSuccessRateLast30(data, goalMinutes),
       average: minutesToTime(calculateAverage(times)),
       median: minutesToTime(calculateMedian(times)),
       min: minutesToTime(Math.min(...times)),
@@ -55,21 +67,34 @@
   function renderStats(stats) {
     document.getElementById('stat-count').textContent = stats.count;
     document.getElementById('stat-streak').textContent = stats.streak;
+    document.getElementById('stat-success-rate').textContent = stats.successRate !== null ? stats.successRate + '%' : '--';
     document.getElementById('stat-average').textContent = stats.average;
     document.getElementById('stat-median').textContent = stats.median;
     document.getElementById('stat-min').textContent = stats.min;
     document.getElementById('stat-max').textContent = stats.max;
+    
+    if (stats.successRate !== null) {
+      const progressBar = document.getElementById('progress-success');
+      progressBar.innerHTML = `<div class="progress-bar-fill" style="width: ${stats.successRate}%"></div>`;
+    }
   }
 
-  function renderRecentEntries(data, limit = 15) {
+  function renderRecentEntries(data, goalTime, limit = 12) {
     const container = document.getElementById('recent-entries');
     const recent = data.slice(-limit).reverse();
-    container.innerHTML = recent.map(entry => `
-      <div class="log-entry">
-        <span class="timestamp">${entry.date}</span>
-        <span class="entry-data">WAKE: ${entry.time}</span>
-      </div>
-    `).join('');
+    const goalMinutes = timeToMinutes(goalTime);
+    
+    container.innerHTML = recent.map(entry => {
+      const mins = timeToMinutes(entry.time);
+      const success = mins <= goalMinutes;
+      return `
+        <div class="log-entry">
+          <span class="log-date">${entry.date}</span>
+          <span class="log-time">${entry.time}</span>
+          <span class="log-status ${success ? 'success' : 'fail'}">${success ? '█ OK' : '✗ LATE'}</span>
+        </div>
+      `;
+    }).join('');
   }
 
   function renderChart(data, goalTime) {
@@ -83,22 +108,22 @@
       data: {
         labels: labels,
         datasets: [{
-          label: 'WAKE TIME',
+          label: 'WAKE',
           data: times,
-          borderColor: '#ff6600',
-          backgroundColor: 'rgba(255, 102, 0, 0.1)',
+          borderColor: '#00ffff',
+          backgroundColor: 'rgba(0, 255, 255, 0.1)',
           borderWidth: 2,
-          pointBackgroundColor: '#ff9933',
-          pointBorderColor: '#ff6600',
-          pointRadius: 4,
-          pointHoverRadius: 6,
-          tension: 0,
+          pointBackgroundColor: '#ff00ff',
+          pointBorderColor: '#ff00ff',
+          pointRadius: 3,
+          pointHoverRadius: 5,
+          tension: 0.1,
         }, {
           label: 'GOAL',
           data: Array(data.length).fill(goalMinutes),
-          borderColor: '#333333',
+          borderColor: '#ff00ff',
           borderWidth: 1,
-          borderDash: [5, 5],
+          borderDash: [4, 2],
           pointRadius: 0,
           fill: false,
         }]
@@ -117,8 +142,8 @@
               callback: function(value) {
                 return minutesToTime(value);
               },
-              color: '#666666',
-              font: { family: 'VT323', size: 14 },
+              color: '#888888',
+              font: { family: 'JetBrains Mono', size: 10 },
             },
             grid: {
               color: '#222222',
@@ -126,8 +151,8 @@
           },
           x: {
             ticks: {
-              color: '#666666',
-              font: { family: 'VT323', size: 12 },
+              color: '#888888',
+              font: { family: 'JetBrains Mono', size: 10 },
               maxRotation: 45,
             },
             grid: {
@@ -137,19 +162,16 @@
         },
         plugins: {
           legend: {
-            labels: {
-              color: '#ff6600',
-              font: { family: 'VT323', size: 14 },
-            }
+            display: false,
           },
           tooltip: {
             backgroundColor: '#0a0a0a',
-            titleColor: '#ff6600',
-            bodyColor: '#00ff00',
-            borderColor: '#333333',
+            titleColor: '#ff00ff',
+            bodyColor: '#00ffff',
+            borderColor: '#444444',
             borderWidth: 1,
-            titleFont: { family: 'VT323', size: 16 },
-            bodyFont: { family: 'VT323', size: 14 },
+            titleFont: { family: 'JetBrains Mono', size: 12 },
+            bodyFont: { family: 'JetBrains Mono', size: 11 },
             callbacks: {
               label: function(context) {
                 if (context.dataset.label === 'GOAL') return null;
@@ -162,19 +184,10 @@
     });
   }
 
-  function updateClock() {
-    const now = new Date();
-    const time = now.toISOString().split('T')[1].split('.')[0];
-    const date = now.toISOString().split('T')[0];
-    document.getElementById('current-time').textContent = `${date} ${time} UTC`;
-  }
-
   document.addEventListener('DOMContentLoaded', function() {
-    updateClock();
-    setInterval(updateClock, 1000);
-    const stats = calculateStats(wakeUpData, GOAL_TIME);
+    const stats = calculateStats(wakeUpData, GOAL_DISPLAY);
     renderStats(stats);
-    renderRecentEntries(wakeUpData);
-    renderChart(wakeUpData, GOAL_TIME);
+    renderRecentEntries(wakeUpData, GOAL_DISPLAY);
+    renderChart(wakeUpData, GOAL_DISPLAY);
   });
 })();
